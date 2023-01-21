@@ -28,6 +28,8 @@ pkgs.mkShell {
   buildInputs = with pkgs; [
     # Enable cross-compilation support.
     rustCrossHook
+    # Add crate dependencies
+    cargoDeps.rocksdb-sys
   ];
   # Runtime dependencies that should be in the service container.
   propagatedBuildInputs = with pkgs; [

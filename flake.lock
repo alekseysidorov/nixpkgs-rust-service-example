@@ -41,11 +41,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1674329541,
-        "narHash": "sha256-B6loy26RMQvutBuR3++KsRen+8CHZSRIof08b5pK8CA=",
+        "lastModified": 1674335306,
+        "narHash": "sha256-iIHVFc/mszUNm4fdNcYY1H7RA1/Mwv0swKMvhoQVmg0=",
         "owner": "alekseysidorov",
         "repo": "nixpkgs-cross-overlay",
-        "rev": "2660380a33d9af41080a7bcba4c049aae5071a9e",
+        "rev": "ddf4353984b5eff8ee0d3ff520172282022aa30c",
         "type": "github"
       },
       "original": {
