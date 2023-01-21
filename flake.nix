@@ -10,7 +10,7 @@
       };
     };
     nixpkgs-cross-overlay = {
-      url = "github:alekseysidorov/nixpkgs-cross-overlay";
+      url = "github:alekseysidorov/nixpkgs-cross-overlay/dev";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-utils.follows = "flake-utils";
@@ -25,7 +25,7 @@
           default = import ./shell.nix { inherit localSystem; };
           cross = import ./shell.nix {
             inherit localSystem;
-            crossSystem = { config = "x86_64-unknown-linux-musl"; };
+            crossSystem = { config = "x86_64-unknown-linux-musl"; useLLVM = true; };
           };
         };
       }

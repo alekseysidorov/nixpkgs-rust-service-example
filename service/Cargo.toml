@@ -1,5 +1,5 @@
 [package]
-name = "axum_service_example"
+name = "axum-example-service"
 version = "0.1.0"
 edition = "2021"
 

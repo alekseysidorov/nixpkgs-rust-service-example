@@ -9,22 +9,32 @@ let
   };
 in
 pkgs.mkShell {
+  # Native project dependencies like build utilities and additional routines 
+  # like container building, linters, etc.
   nativeBuildInputs = with pkgs.pkgsBuildHost; [
+    git
     # linters
     dprint
-    # Rust files
-    sccache
+    # Rust
     rustToolchain
-    # Enable cross-compilation support.
-    pkgs.rustCrossHook
-  ];
-
-  buildInputs = with pkgs; [
-    # List of tested native libraries.
-
+    cargo-make
+    sccache
     # Will add some dependencies like libiconv
     rustBuildHostDependencies
+    # Manipulations with containers.
+    skopeo
   ];
-  # Nice shell prompt.
+  # Libraries essential to build the service binaries.
+  buildInputs = with pkgs; [
+    # Enable cross-compilation support.
+    rustCrossHook
+  ];
+  # Runtime dependencies that should be in the service container.
+  propagatedBuildInputs = with pkgs; [
+    openssl.dev
+  ];
+  # Prettify shell prompt.
   shellHook = "${pkgs.crossBashPrompt}";
+  # Use sscache to improve rebuilding performance.
+  RUSTC_WRAPPER = "sccache";
 }
