@@ -10,7 +10,7 @@
       };
     };
     nixpkgs-cross-overlay = {
-      url = "github:alekseysidorov/nixpkgs-cross-overlay";
+      url = "github:alekseysidorov/nixpkgs-cross-overlay/dev";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-utils.follows = "flake-utils";

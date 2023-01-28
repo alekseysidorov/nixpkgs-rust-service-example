@@ -17,7 +17,6 @@ pkgs.mkShell {
     dprint
     # Rust
     rustToolchain
-    cargo-make
     sccache
     # Will add some dependencies like libiconv
     rustBuildHostDependencies

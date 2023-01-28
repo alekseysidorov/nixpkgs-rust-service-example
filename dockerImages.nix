@@ -8,7 +8,7 @@ let
     inherit localSystem crossSystem;
   };
   # Import shell to get propagated build inputs.
-  shell = pkgs.callPackage ./shell.nix { inherit localSystem crossSystem; };
+  shell = import ./shell.nix { };
   # Use proper dockerTools.
   dockerTools = pkgs.pkgsBuildHost.dockerTools;
 in
@@ -24,7 +24,7 @@ in
       pkgs.dockerTools.caCertificates
       # Copy actual binary
       (pkgs.copyBinaryFromCargoBuild {
-        name = "axum-example-service";
+        name = "axum_example_service";
         targetDir = ./target;
         buildInputs = shell.propagatedBuildInputs;
       })
@@ -33,7 +33,7 @@ in
     ];
 
     config = {
-      Cmd = [ "axum-example-service" ];
+      Cmd = [ "axum_example_service" ];
       WorkingDir = "/";
       Expose = 8080;
     };
