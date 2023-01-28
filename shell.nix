@@ -13,6 +13,8 @@ pkgs.mkShell {
   # like container building, linters, etc.
   nativeBuildInputs = with pkgs.pkgsBuildHost; [
     git
+    perl
+    cmake
     # linters
     dprint
     # Rust
