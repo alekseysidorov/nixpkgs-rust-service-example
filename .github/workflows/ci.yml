@@ -1,0 +1,34 @@
+name: "Test"
+on:
+  pull_request:
+
+jobs:
+  lints:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v18
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+      - run: nix develop --command dprint check --verbose
+
+  build-cache:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        crossSystem:
+          - '{ config = "x86_64-unknown-linux-musl"; useLLVM = true; isStatic = true;  }'
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v18
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+
+      - name: Get branch name
+        id: branch-name
+        uses: tj-actions/branch-names@v6
+
+      - name: "Build docker image"
+        run: ./scripts/build_docker_image.sh axum_example_service
