@@ -1,4 +1,4 @@
-#! /usr/bin/env sh
+#! /usr/bin/env bash
 set -eo pipefail
 
 NIX_CROSS_SYSTEM=${NIX_CROSS_SYSTEM:-'{ config = "x86_64-unknown-linux-musl"; isStatic = true; useLLVM = true; }'}
