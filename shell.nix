@@ -26,6 +26,7 @@ pkgs.mkShell rec {
     docker
     # Add crate dependencies
     cargoDeps.rocksdb-sys
+    cargoDeps.rdkafka-sys
   ];
   # Libraries essential to build the service binaries
   buildInputs = with pkgs; [
