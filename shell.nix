@@ -15,6 +15,7 @@ pkgs.mkShell rec {
     git
     # Linters
     dprint
+    nixpkgs-fmt
     # Rust
     (rust-bin.fromRustupToolchainFile ./rust-toolchain.toml)
     sccache
