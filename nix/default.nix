@@ -13,21 +13,7 @@ let
   nixpkgs = "${lockFile.nixpkgs-cross-overlay}/utils/nixpkgs.nix";
 
   pkgs = import nixpkgs {
-    inherit localSystem crossSystem;
-    overlays = [
-      # Setup Rust toolchain for this project.
-      (final: prev:
-        let
-          rustToolchain = prev.rust-bin.fromRustupToolchainFile ./../rust-toolchain.toml;
-        in
-        {
-          inherit rustToolchain;
-          rustc = rustToolchain;
-          cargo = rustToolchain;
-          clippy = rustToolchain;
-          rustfmt = rustToolchain;
-        })
-    ] ++ overlays;
+    inherit localSystem crossSystem overlays;
   };
 in
 pkgs
