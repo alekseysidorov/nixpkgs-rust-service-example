@@ -23,13 +23,13 @@ pkgs.mkShell rec {
     # Manipulations with containers
     skopeo
     docker
+    # Add crate dependencies
+    cargoDeps.rocksdb-sys
   ];
   # Libraries essential to build the service binaries
   buildInputs = with pkgs; [
     # Enable Rust cross-compilation support
     rustCrossHook
-    # Add crate dependencies
-    cargoDeps.rocksdb-sys
   ];
   # Runtime dependencies that should be in the service container
   propagatedBuildInputs = with pkgs; [
