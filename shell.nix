@@ -39,19 +39,19 @@ pkgs.mkShell rec {
   shellHook = "${pkgs.crossBashPrompt}";
   # Use sscache to improve rebuilding performance
   RUSTC_WRAPPER = "sccache";
-  
+
   /* Service docker image definition
   
-  To compile docker image run the following commands:
+    To compile docker image run the following commands:
   
-  ```shell
-  # Setup the Nix cross compilation 
-  export NIX_CROSS_SYSTEM='{ config = "x86_64-unknown-linux-musl"; isStatic = false; useLLVM = true; }'
-  # Compile cargo binary
-  nix-shell --pure --arg crossSystem "$NIX_CROSS_SYSTEM" --run "cargo build --release"
-  # Build docker image from the compiled service
-  docker load <$(nix-build ./shell.nix -A dockerImage --arg crossSystem "$NIX_CROSS_SYSTEM")
-  ```
+    ```shell
+    # Setup the Nix cross compilation 
+    export NIX_CROSS_SYSTEM='{ config = "x86_64-unknown-linux-musl"; isStatic = false; useLLVM = true; }'
+    # Compile cargo binary
+    nix-shell --pure --arg crossSystem "$NIX_CROSS_SYSTEM" --run "cargo build --release"
+    # Build docker image from the compiled service
+    docker load <$(nix-build ./shell.nix -A dockerImage --arg crossSystem "$NIX_CROSS_SYSTEM")
+    ```
   */
   passthru.dockerImage =
     {

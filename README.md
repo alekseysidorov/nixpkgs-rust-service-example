@@ -1,6 +1,6 @@
 # nixpkgs-rust-service-example
 
-This example shows how to compile a docker image containing the Rust binary by using 
+This example shows how to compile a docker image containing the Rust binary by using
 the [`nixpkgs-cross-overlay`] facilities.
 
 ## Prerequisites
