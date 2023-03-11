@@ -1,10 +1,9 @@
-#! /usr/bin/env sh
+#! /usr/bin/env bash
 set -eo pipefail
 
-NIX_CROSS_SYSTEM=${NIX_CROSS_SYSTEM:-'{ config = "x86_64-unknown-linux-musl"; isStatic = true; useLLVM = true; }'}
-service_name=${1}
+NIX_CROSS_SYSTEM=${NIX_CROSS_SYSTEM:-'{ config = "x86_64-unknown-linux-musl"; isStatic = false; useLLVM = true; }'}
 
 # Compile service
-nix-shell --pure --arg crossSystem "${NIX_CROSS_SYSTEM}" --run "cargo build --release -p ${service_name}"
-image_archive=$(nix-build ./dockerImages.nix --arg crossSystem "$NIX_CROSS_SYSTEM" -A $service_name)
+nix-shell --pure --arg crossSystem "${NIX_CROSS_SYSTEM}" --run "cargo build --release"
+image_archive=$(nix-build ./shell.nix -A dockerImage --arg crossSystem "$NIX_CROSS_SYSTEM")
 echo $image_archive

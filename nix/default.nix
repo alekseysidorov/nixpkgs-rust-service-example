@@ -9,33 +9,11 @@ in
 , overlays ? [ ]
 }:
 let
-  # Import local packages.
-  pkgs = import src {
-    inherit localSystem config;
+  # Use the exact nixpkgs revision as the one used by nixpkgs-cross-overlay itself.
+  nixpkgs = "${lockFile.nixpkgs-cross-overlay}/utils/nixpkgs.nix";
 
-    overlays = [
-      # Setup cross overlay.
-      (import lockFile.nixpkgs-cross-overlay)
-    ];
+  pkgs = import nixpkgs {
+    inherit localSystem crossSystem overlays;
   };
 in
-# Make cross system packages.
-pkgs.mkCrossPkgs {
-  inherit src localSystem crossSystem;
-  # Setup extra overlays.
-  overlays = [
-    # Setup Rust toolchain via rustup.
-    (import lockFile.rust-overlay)
-    (final: prev:
-      let
-        rustToolchain = prev.rust-bin.fromRustupToolchainFile ./../rust-toolchain.toml;
-      in
-      {
-        inherit rustToolchain;
-        rustc = rustToolchain;
-        cargo = rustToolchain;
-        clippy = rustToolchain;
-        rustfmt = rustToolchain;
-      })
-  ] ++ overlays;
-}
+pkgs
