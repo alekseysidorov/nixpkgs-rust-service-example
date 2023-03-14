@@ -25,18 +25,15 @@ pkgs.mkShell rec {
     skopeo
     docker
     # Add crate dependencies
-    cargoDeps.rocksdb-sys
-    cargoDeps.rdkafka-sys
+    pkgs.cargoDeps.rocksdb-sys
+    pkgs.cargoDeps.rdkafka-sys
   ];
   # Libraries essential to build the service binaries
   buildInputs = with pkgs; [
     # Enable Rust cross-compilation support
     rustCrossHook
   ];
-  # Runtime dependencies that should be in the service container
-  propagatedBuildInputs = with pkgs; [
-    openssl.dev
-  ];
+
   # Prettify shell prompt
   shellHook = "${pkgs.crossBashPrompt}";
   # Use sscache to improve rebuilding performance
@@ -65,17 +62,19 @@ pkgs.mkShell rec {
       inherit tag name;
 
       contents = with pkgs; [
-        coreutils
-        bashInteractive
-        dockerTools.caCertificates
         # Actual service binary compiled by Cargo
         (copyBinaryFromCargoBuild {
           inherit name;
           targetDir = ./target;
-          buildInputs = propagatedBuildInputs;
+          # Use the shell native build inputs as runtime dependencies on which the compiled 
+          # Rust binary depends.
+          buildInputs = nativeBuildInputs;
         })
-        # Utilites like ldd to help image debugging
+        dockerTools.caCertificates
+        # Utilites like ldd and bash to help image debugging
         stdenv.cc.libc_bin
+        coreutils
+        bashInteractive
       ];
 
       config = {

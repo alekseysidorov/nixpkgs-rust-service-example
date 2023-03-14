@@ -1,4 +1,3 @@
 [toolchain]
 channel = "stable"
-targets = ["x86_64-unknown-linux-musl"]
-components = ["rust-src", "llvm-tools-preview"]
+components = ["rust-src", "llvm-tools"]
