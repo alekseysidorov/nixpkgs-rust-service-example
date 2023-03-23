@@ -8,7 +8,7 @@ let
     inherit localSystem crossSystem;
   };
 in
-pkgs.mkShell rec {
+pkgs.mkShell {
   # Native project dependencies like build utilities and additional routines 
   # like container building, linters, etc.
   nativeBuildInputs = with pkgs.pkgsBuildHost; [
@@ -37,7 +37,7 @@ pkgs.mkShell rec {
   # Prettify shell prompt
   shellHook = "${pkgs.crossBashPrompt}";
   # Use sscache to improve rebuilding performance
-  RUSTC_WRAPPER = "sccache";
+  env.RUSTC_WRAPPER = "sccache";
 
   /* Service docker image definition
   
@@ -68,7 +68,11 @@ pkgs.mkShell rec {
           targetDir = ./target;
           # Use the shell native build inputs as runtime dependencies on which the compiled 
           # Rust binary depends.
-          buildInputs = nativeBuildInputs;
+          derivationArgs.buildInputs = [
+            openssl
+            rdkafka
+            rocksdb
+          ];
         })
         dockerTools.caCertificates
         # Utilites like ldd and bash to help image debugging
