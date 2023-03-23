@@ -11,7 +11,7 @@
     };
   };
 
-  outputs = { self, flake-utils, nixpkgs-cross-overlay }: { } // flake-utils.lib.eachDefaultSystem
+  outputs = { flake-utils, ... }: { } // flake-utils.lib.eachDefaultSystem
     (localSystem:
       {
         devShells = {
