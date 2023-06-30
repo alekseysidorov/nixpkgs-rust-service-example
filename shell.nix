@@ -27,6 +27,7 @@ pkgs.mkShell {
     # Add crate dependencies
     pkgs.cargoDeps.rocksdb-sys
     pkgs.cargoDeps.rdkafka-sys
+    pkgs.cargoDeps.openssl-sys
   ];
   # Libraries essential to build the service binaries
   buildInputs = with pkgs; [
