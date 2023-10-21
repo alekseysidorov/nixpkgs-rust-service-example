@@ -1,2 +1,3 @@
 [workspace]
 members = ["service"]
+resolver = "2"
