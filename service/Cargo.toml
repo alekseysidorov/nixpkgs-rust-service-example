@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 axum = "0.6"
-rdkafka = { version = "0.34.0", features = ["cmake-build"] }
+rdkafka = { version = "0.36.0", features = ["cmake-build"] }
 reqwest = "0.11"
 rocksdb = "0.21"
 tempfile = "3.3"

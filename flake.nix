@@ -52,7 +52,7 @@
           };
         };
 
-        # Docker service image building example using the native `nix build` approach without an
+        # Docker service image example using the native `nix build` approach without an
         # additional magical shell scripts.
         packages.dockerImage =
           let
@@ -105,7 +105,7 @@
           pkgsCross.pkgsBuildHost.dockerTools.buildLayeredImage {
             name = serviceName;
 
-            contents = with pkgs; [
+            contents = with pkgsCross; [
               servicePackage
               dockerTools.caCertificates
               # Utilites like ldd and bash to help image debugging
@@ -120,7 +120,6 @@
               Expose = 8080;
             };
           };
-
 
         treefmt.config = {
           inherit (config.flake-root) projectRootFile;
