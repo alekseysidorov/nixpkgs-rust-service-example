@@ -10,7 +10,7 @@ jobs:
       - uses: cachix/install-nix-action@v22
         with:
           nix_path: nixpkgs=channel:nixos-unstable
-      - run: nix develop --command dprint check --verbose
+      - run: nix flake check
 
   test-image:
     strategy:

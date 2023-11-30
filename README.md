@@ -1,7 +1,7 @@
 # nixpkgs-rust-service-example
 
-This example shows how to compile a docker image containing the Rust binary by using
-the [`nixpkgs-cross-overlay`] facilities.
+This example shows how to compile a docker image containing the Rust binary by
+using the [`nixpkgs-cross-overlay`] facilities.
 
 ## Prerequisites
 
@@ -23,8 +23,9 @@ MIT licensed.
 
 ## Contribution
 
-Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion
-by you, shall be licensed as MIT, without any additional terms or conditions.
+Unless you explicitly state otherwise, any contribution intentionally submitted
+for inclusion by you, shall be licensed as MIT, without any additional terms or
+conditions.
 
 [Nix Package Manager]: https://nixos.org/download.html
 [Nix Flakes]: https://nixos.wiki/wiki/Flakes

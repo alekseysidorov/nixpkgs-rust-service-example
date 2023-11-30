@@ -12,10 +12,6 @@ pkgs.mkShell {
   # Native project dependencies like build utilities and additional routines 
   # like container building, linters, etc.
   nativeBuildInputs = with pkgs.pkgsBuildHost; [
-    git
-    # Linters
-    dprint
-    nixpkgs-fmt
     # Rust
     (rust-bin.fromRustupToolchainFile ./rust-toolchain.toml)
     sccache
