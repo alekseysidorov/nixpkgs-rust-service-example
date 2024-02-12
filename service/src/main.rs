@@ -1,6 +1,7 @@
 use std::net::SocketAddr;
 
 use axum::{response::Html, routing::get, Router};
+use tokio::net::TcpListener;
 
 #[tokio::main]
 async fn main() {
@@ -18,9 +19,9 @@ async fn main() {
     // run it
     let addr = SocketAddr::from(([0, 0, 0, 0], 8080));
     println!("listening on {addr}");
+    let listener = TcpListener::bind(addr).await.expect("unable to bind socket address");
 
-    axum::Server::bind(&addr)
-        .serve(app.into_make_service())
+    axum::serve(listener, app)
         .await
         .unwrap();
 }

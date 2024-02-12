@@ -17,6 +17,15 @@ docker load <$(./scripts/build_docker_image.sh)
 docker run -it axum_example_service:latest
 ```
 
+### With flakes
+
+```shell
+# Compile docker image
+docker load <$(nix build ".#dockerImage" --no-link --print-out-paths)
+# Run docker image
+docker run -it axum_example_service:latest
+```
+
 ## License
 
 MIT licensed.
