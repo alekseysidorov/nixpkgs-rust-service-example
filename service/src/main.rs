@@ -19,11 +19,11 @@ async fn main() {
     // run it
     let addr = SocketAddr::from(([0, 0, 0, 0], 8080));
     println!("listening on {addr}");
-    let listener = TcpListener::bind(addr).await.expect("unable to bind socket address");
-
-    axum::serve(listener, app)
+    let listener = TcpListener::bind(addr)
         .await
-        .unwrap();
+        .expect("unable to bind socket address");
+
+    axum::serve(listener, app).await.unwrap();
 }
 
 async fn handler() -> Html<&'static str> {
