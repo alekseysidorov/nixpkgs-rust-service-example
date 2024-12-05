@@ -30,6 +30,7 @@
       crossSystem = {
         config = "x86_64-unknown-linux-musl";
         useLLVM = true;
+        isStatic = true;
       };
 
       pkgs = import nixpkgs {
@@ -76,8 +77,8 @@
             rustc = rustToolchain;
           };
 
-          serviceName = "axum_example_service";
 
+          serviceName = "axum_example_service";
           servicePackage = rustPlatform.buildRustPackage {
             pname = serviceName;
             version = "0.1.0";

@@ -1,4 +1,4 @@
-# A simplest nix shell file with the project dependencies and 
+# A simplest nix shell file with the project dependencies and
 # a cross-compilation support.
 { localSystem ? builtins.currentSystem
 , crossSystem ? null
@@ -9,7 +9,7 @@ let
   };
 in
 pkgs.mkShell {
-  # Native project dependencies like build utilities and additional routines 
+  # Native project dependencies like build utilities and additional routines
   # like container building, linters, etc.
   nativeBuildInputs = with pkgs.pkgsBuildHost; [
     # Rust
@@ -37,11 +37,11 @@ pkgs.mkShell {
   env.RUSTC_WRAPPER = "sccache";
 
   /* Service docker image definition
-  
+
     To compile docker image run the following commands:
-  
+
     ```shell
-    # Setup the Nix cross compilation 
+    # Setup the Nix cross compilation
     export NIX_CROSS_SYSTEM='{ config = "x86_64-unknown-linux-musl"; isStatic = false; useLLVM = true; }'
     # Compile cargo binary
     nix-shell --pure --arg crossSystem "$NIX_CROSS_SYSTEM" --run "cargo build --release"
@@ -63,7 +63,7 @@ pkgs.mkShell {
         (copyBinaryFromCargoBuild {
           inherit name;
           targetDir = ./target;
-          # Use the shell native build inputs as runtime dependencies on which the compiled 
+          # Use the shell native build inputs as runtime dependencies on which the compiled
           # Rust binary depends.
           derivationArgs.buildInputs = [
             openssl
