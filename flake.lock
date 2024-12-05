@@ -62,11 +62,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1733397056,
-        "narHash": "sha256-pbL9hQYxL/OhZYCbpB3z1WvB+CHqFPk3z6MxGTMyNw8=",
+        "lastModified": 1733404296,
+        "narHash": "sha256-PDH7SmrEOG+O+7u0cfymPB9scqaSMRWghuKWaJfr0l0=",
         "owner": "alekseysidorov",
         "repo": "nixpkgs-cross-overlay",
-        "rev": "513582154d30bac1555b3ec064d87b3320402e27",
+        "rev": "b54ec1824ab96ad3e200e9544aec53fd55149aa5",
         "type": "github"
       },
       "original": {
