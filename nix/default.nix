@@ -4,8 +4,6 @@ let
 in
 { localSystem ? builtins.currentSystem
 , crossSystem ? null
-, src ? lockFile.nixpkgs
-, config ? { }
 , overlays ? [ ]
 }:
 let

@@ -1,8 +1,8 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
     nixpkgs-cross-overlay = {
-      url = "github:alekseysidorov/nixpkgs-cross-overlay";
+      url = "github:alekseysidorov/nixpkgs-cross-overlay/dev";
       inputs = {
         nixpkgs.follows = "nixpkgs";
       };
