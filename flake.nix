@@ -18,11 +18,12 @@
   };
 
   outputs =
-    inputs @ { self
+    { self
     , nixpkgs
     , flake-utils
     , treefmt-nix
     , rust-overlay
+    , nixpkgs-cross-overlay
     , ...
     }: flake-utils.lib.eachDefaultSystem (system:
     let
@@ -30,15 +31,14 @@
       crossSystem = {
         config = "x86_64-unknown-linux-musl";
         useLLVM = true;
-        isStatic = true;
       };
 
       pkgs = import nixpkgs {
         inherit system;
 
         overlays = [
-          inputs.rust-overlay.overlays.default
-          inputs.nixpkgs-cross-overlay.overlays.default
+          rust-overlay.overlays.default
+          nixpkgs-cross-overlay.overlays.default
         ];
       };
       # Eval the treefmt modules from ./treefmt.nix
@@ -60,13 +60,11 @@
       # additional magical shell scripts.
       packages.dockerImage =
         let
-          pkgsCross = pkgs.mkCrossPkgs {
-            src = nixpkgs;
+          pkgsCross = import nixpkgs {
             inherit localSystem crossSystem;
-
             overlays = [
-              inputs.rust-overlay.overlays.default
-              inputs.nixpkgs-cross-overlay.overlays.default
+              rust-overlay.overlays.default
+              nixpkgs-cross-overlay.overlays.default
             ];
           };
 
@@ -76,7 +74,6 @@
             cargo = rustToolchain;
             rustc = rustToolchain;
           };
-
 
           serviceName = "axum_example_service";
           servicePackage = rustPlatform.buildRustPackage {
@@ -100,21 +97,25 @@
             ];
           };
         in
-        pkgsCross.pkgsBuildHost.dockerTools.buildLayeredImage {
+        pkgs.dockerTools.buildImage {
           name = serviceName;
           tag = "latest";
 
-          contents = with pkgsCross; [
-            servicePackage
-            dockerTools.caCertificates
-            # Utilites like ldd and bash to help image debugging
-            stdenv.cc.libc_bin
-            coreutils
-            bashInteractive
-          ];
+          copyToRoot = pkgsCross.buildEnv {
+            name = "image-root";
+            paths = with pkgsCross; [
+              servicePackage
+              dockerTools.caCertificates
+              # Utilites like ldd and bash to help image debugging
+              stdenv.cc.libc_bin
+              coreutils
+              bashInteractive
+            ];
+            pathsToLink = [ "/bin" ];
+          };
 
           config = {
-            Cmd = [ serviceName ];
+            Cmd = [ "/bin/bash" ];
             WorkingDir = "/";
             Expose = 8080;
           };
