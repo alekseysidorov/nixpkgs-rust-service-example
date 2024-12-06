@@ -30,7 +30,6 @@
       localSystem = system;
       crossSystem = {
         config = "x86_64-unknown-linux-musl";
-        useLLVM = true;
       };
 
       pkgs = import nixpkgs {
@@ -68,12 +67,7 @@
             ];
           };
 
-          rustToolchain = pkgsCross.pkgsBuildHost.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
-
-          rustPlatform = pkgsCross.makeRustPlatform {
-            cargo = rustToolchain;
-            rustc = rustToolchain;
-          };
+          rustPlatform = pkgsCross.rustPlatform;
 
           serviceName = "axum_example_service";
           servicePackage = rustPlatform.buildRustPackage {
@@ -97,25 +91,20 @@
             ];
           };
         in
-        pkgs.dockerTools.buildImage {
+        pkgsCross.pkgsBuildHost.dockerTools.buildLayeredImage {
           name = serviceName;
-          tag = "latest";
 
-          copyToRoot = pkgsCross.buildEnv {
-            name = "image-root";
-            paths = with pkgsCross; [
-              servicePackage
-              dockerTools.caCertificates
-              # Utilites like ldd and bash to help image debugging
-              stdenv.cc.libc_bin
-              coreutils
-              bashInteractive
-            ];
-            pathsToLink = [ "/bin" ];
-          };
+          contents = with pkgsCross; [
+            servicePackage
+            dockerTools.caCertificates
+            # Utilites like ldd and bash to help image debugging
+            stdenv.cc.libc_bin
+            coreutils
+            bashInteractive
+          ];
 
           config = {
-            Cmd = [ "/bin/bash" ];
+            Cmd = [ serviceName ];
             WorkingDir = "/";
             Expose = 8080;
           };
