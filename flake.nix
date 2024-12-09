@@ -30,6 +30,7 @@
       localSystem = system;
       crossSystem = {
         config = "x86_64-unknown-linux-musl";
+        useLLVM = true;
       };
 
       pkgs = import nixpkgs {
