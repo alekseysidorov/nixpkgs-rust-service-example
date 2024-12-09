@@ -29,7 +29,8 @@
     let
       localSystem = system;
       crossSystem = {
-        config = "x86_64-unknown-linux-gnu";
+        config = "x86_64-unknown-linux-musl";
+        isStatic = true;
       };
 
       pkgs = import nixpkgs {
@@ -81,7 +82,7 @@
 
               nativeBuildInputs = [
                 rustBuildHostDependencies
-                # Cargo crate dependencies
+                # # Cargo crate dependencies
                 cargoDeps.rocksdb-sys
                 cargoDeps.rdkafka-sys
                 cargoDeps.openssl-sys
@@ -96,6 +97,7 @@
         in
         pkgsCross.pkgsBuildHost.dockerTools.buildLayeredImage {
           name = serviceName;
+          tag = "latest";
 
           contents = with pkgsCross; [
             servicePackage

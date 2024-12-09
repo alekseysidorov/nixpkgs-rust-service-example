@@ -32,7 +32,7 @@ async fn handler() -> Html<&'static str> {
         .create_native_config()
         .unwrap();
     let path = tempfile::tempdir().unwrap();
-    let _db = rocksdb::DB::open_default(&path).unwrap();
+    // let _db = rocksdb::DB::open_default(&path).unwrap();
 
     Html("<h1>Hello, World!</h1>")
 }
