@@ -14,7 +14,6 @@ pkgs.mkShell {
   nativeBuildInputs = with pkgs.pkgsBuildHost; [
     # Rust
     (rust-bin.fromRustupToolchainFile ./rust-toolchain.toml)
-    sccache
     # Will add some dependencies like libiconv
     rustBuildHostDependencies
     # Manipulations with containers
@@ -33,8 +32,6 @@ pkgs.mkShell {
 
   # Prettify shell prompt
   shellHook = "${pkgs.crossBashPrompt}";
-  # Use sscache to improve rebuilding performance
-  env.RUSTC_WRAPPER = "sccache";
 
   /* Service docker image definition
 

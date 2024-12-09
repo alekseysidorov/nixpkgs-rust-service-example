@@ -29,7 +29,7 @@
     let
       localSystem = system;
       crossSystem = {
-        config = "x86_64-unknown-linux-musl";
+        config = "x86_64-unknown-linux-gnu";
       };
 
       pkgs = import nixpkgs {
@@ -67,29 +67,32 @@
             ];
           };
 
-          rustPlatform = pkgsCross.rustPlatform;
-
           serviceName = "axum_example_service";
-          servicePackage = rustPlatform.buildRustPackage {
-            pname = serviceName;
-            version = "0.1.0";
-            src = ./.;
-            cargoLock.lockFile = ./Cargo.lock;
+          servicePackage = pkgsCross.callPackage
+            ({ rustPlatform
+             , cargoDeps
+             , rustCrossHook
+             , rustBuildHostDependencies
+             }: rustPlatform.buildRustPackage {
+              pname = serviceName;
+              version = "0.1.0";
+              src = ./.;
+              cargoLock.lockFile = ./Cargo.lock;
 
-            nativeBuildInputs = with pkgsCross; [
-              # Will add some dependencies like libiconv
-              pkgsBuildHost.libiconv
-              # Cargo crate dependencies
-              cargoDeps.rocksdb-sys
-              cargoDeps.rdkafka-sys
-              cargoDeps.openssl-sys
-            ];
-            # Libraries essential to build the service binaries
-            buildInputs = with pkgsCross; [
-              # Enable Rust cross-compilation support
-              rustCrossHook
-            ];
-          };
+              nativeBuildInputs = [
+                rustBuildHostDependencies
+                # Cargo crate dependencies
+                cargoDeps.rocksdb-sys
+                cargoDeps.rdkafka-sys
+                cargoDeps.openssl-sys
+              ];
+              # Libraries essential to build the service binaries
+              buildInputs = [
+                # Fixup Rust cross-compilation issues
+                rustCrossHook
+              ];
+            })
+            { };
         in
         pkgsCross.pkgsBuildHost.dockerTools.buildLayeredImage {
           name = serviceName;
